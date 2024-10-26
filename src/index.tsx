@@ -1,21 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import App from "./App";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { SetupWorkerApi } from "msw/browser";
-
-if (process.env.NODE_ENV === "development") {
-  const { worker }: { worker: SetupWorkerApi } = require("./mocks/browser");
-  worker.start({ onUnhandledRequest: "bypass" });
-}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
+
+// 서비스 워커가 준비된 후에만 상태가 나오도록 변경
+const RootApp = () => {
+  const [isWorkerReady, setIsWorkerReady] = useState(false);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      const { worker } = require("./mocks/browser");
+      worker.start().then(() => {
+        console.log("Mock Service Worker started");
+        setIsWorkerReady(true);
+      });
+    } else {
+      setIsWorkerReady(true);
+    }
+  }, []);
+
+  if (!isWorkerReady) {
+    return <div>Loading...</div>;
+  }
+
+  return <App />;
+};
+
 root.render(
   <React.StrictMode>
-    <App />
+    <RootApp />
   </React.StrictMode>,
 );
 

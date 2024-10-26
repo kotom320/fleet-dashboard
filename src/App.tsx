@@ -1,14 +1,14 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
+import { Table } from "./components/Table";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="App"></div>
+      <Table />
     </ThemeProvider>
   );
 }
