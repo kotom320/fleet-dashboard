@@ -4,4 +4,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Implementation
 
-(Please write about your implementation)
+yarn install
+yarn start
