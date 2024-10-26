@@ -22,17 +22,11 @@ export const handlers = [
     const is_starred = url.searchParams.get("is_starred") || "false";
     let filteredLocations = locations;
 
-    // location_name 필터링
-    if (location_name) {
-      filteredLocations = filteredLocations.filter((location) =>
-        location.name.toLowerCase().includes(location_name.toLowerCase()),
-      );
-    }
-
-    // robot_id 필터링
-    if (robot_id) {
+    if (location_name || robot_id) {
       filteredLocations = filteredLocations.filter(
-        (location) => location.robot.id === robot_id,
+        (location) =>
+          location.name.toLowerCase().includes(location_name.toLowerCase()) ||
+          location.robot.id.toLowerCase().includes(robot_id.toLowerCase()),
       );
     }
 

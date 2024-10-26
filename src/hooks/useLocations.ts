@@ -5,6 +5,7 @@ import {
   updateStarredLocation,
 } from "../apis/locationApi";
 import { Location } from "../mocks/db";
+import { useDebounce } from "../hooks/useDebounce";
 
 export const useLocations = () => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -18,13 +19,16 @@ export const useLocations = () => {
     is_starred: false,
   });
 
+  const debouncedSearchTerm = useDebounce(filters.location_name, 500);
+
   const fetchLocations = async () => {
     setLoading(true);
     try {
       console.log("page", page);
       const data = await getLocations({
         page,
-        location_name: filters.location_name,
+        location_name: debouncedSearchTerm,
+        robot_id: debouncedSearchTerm,
         is_starred: filters.is_starred,
       });
       console.log("data ++++ ", data);
