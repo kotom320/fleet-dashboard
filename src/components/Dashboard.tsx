@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { useLocations } from "../hooks/useLocations";
 import { Filter } from "./Filter";
 import { Table } from "./Table";
@@ -14,8 +15,12 @@ export const Dashboard = () => {
   } = useLocations();
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <Box
+      sx={{
+        padding: "24px",
+      }}
+    >
+      <h1>Dongwook Fleet</h1>
       <Filter onFiltersChange={setFilters} />
       <Table
         locations={locations}
@@ -25,6 +30,6 @@ export const Dashboard = () => {
         loading={loading}
         totalCount={totalCount}
       />
-    </div>
+    </Box>
   );
 };

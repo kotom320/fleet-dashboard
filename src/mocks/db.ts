@@ -1,7 +1,7 @@
 export interface Location {
   id: number;
   name: string;
-  robot: {
+  robot?: {
     id: string;
     is_online: boolean;
   };
@@ -35,10 +35,6 @@ export const locations: Location[] = [
   {
     id: 3,
     name: "Sunset Grill",
-    robot: {
-      id: "pqrst012",
-      is_online: false,
-    },
   },
   {
     id: 4,
@@ -59,18 +55,10 @@ export const locations: Location[] = [
   {
     id: 6,
     name: "Spicy Fiesta",
-    robot: {
-      id: "efghi910",
-      is_online: true,
-    },
   },
   {
     id: 7,
     name: "Grill House",
-    robot: {
-      id: "jklmn112",
-      is_online: false,
-    },
   },
   {
     id: 8,

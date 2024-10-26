@@ -26,7 +26,7 @@ export const handlers = [
       filteredLocations = filteredLocations.filter(
         (location) =>
           location.name.toLowerCase().includes(location_name.toLowerCase()) ||
-          location.robot.id.toLowerCase().includes(robot_id.toLowerCase()),
+          location.robot?.id.toLowerCase().includes(robot_id?.toLowerCase()),
       );
     }
 
