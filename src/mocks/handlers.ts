@@ -8,7 +8,6 @@ interface LocationsResult {
 }
 
 interface LocationsPathParams {
-  page: string;
   location_name: string;
   robot_id: string;
   is_starred: string;
@@ -18,7 +17,6 @@ export const handlers = [
   http.get<LocationsPathParams>("/locations", ({ request }) => {
     const url = new URL(request.url);
 
-    const page = url.searchParams.get("page") || "1";
     const location_name = url.searchParams.get("location_name") || "";
     const robot_id = url.searchParams.get("robot_id") || "";
     const is_starred = url.searchParams.get("is_starred") || "false";
@@ -48,45 +46,35 @@ export const handlers = [
       );
     }
 
-    // 페이지네이션 처리
-    const pageNumber = parseInt(page, 10);
-    const pageSize = 6;
-    const paginatedLocations = filteredLocations.slice(
-      (pageNumber - 1) * pageSize,
-      pageNumber * pageSize,
-    );
-
     const result: LocationsResult = {
       total_count: filteredLocations.length,
-      locations: paginatedLocations,
+      locations: filteredLocations,
     };
-    console.log("result ++++ ", result);
+
     return HttpResponse.json(result);
   }),
 
   http.get("/starred_location_ids", () => {
-    const location_ids = JSON.parse(
-      sessionStorage.getItem("starred_location_ids") || "[]",
-    );
+    const storedData = sessionStorage.getItem("starred_location_ids");
+    console.log("storedData", storedData);
+    // storedData가 빈 객체이거나 null일 경우 빈 배열 반환
+    let location_ids: number[] = [];
+
+    if (storedData && storedData !== "{}") {
+      location_ids = JSON.parse(storedData);
+    }
 
     return HttpResponse.json({
       location_ids,
     });
   }),
 
-  http.put("/starred_location_ids", ({ request }) => {
-    if (!request.body) {
-      return HttpResponse.json(
-        { error_msg: "Encountered unexpected error" },
-        { status: 500 },
-      );
+  http.put("/starred_location_ids", async ({ request }) => {
+    const body = await request.json();
+    if (body) {
+      sessionStorage.setItem("starred_location_ids", JSON.stringify(body));
     }
 
-    sessionStorage.setItem(
-      "starred_location_ids",
-      JSON.stringify(request.body),
-    );
-
-    return HttpResponse.json(null, { status: 204 });
+    return new HttpResponse(null, { status: 204 });
   }),
 ];

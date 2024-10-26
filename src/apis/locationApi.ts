@@ -16,15 +16,13 @@ export const getLocations = async (filters: {
 
 export const getStarredLocationIds = async () => {
   const { data } = await apiClient.get("/starred_location_ids");
+  console.log("data", data);
   return data.location_ids;
 };
 
-export const updateStarredLocation = async (
-  locationId: number,
-  isStarred: boolean,
-) => {
+export const updateStarredLocation = async (updatedStarredIds: number[]) => {
   try {
-    await apiClient.put("/starred_location_ids", { locationId, isStarred });
+    await apiClient.put("/starred_location_ids", updatedStarredIds);
   } catch (error) {
     throw new Error("Could not star/unstar the location");
   }
